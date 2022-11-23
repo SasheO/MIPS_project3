@@ -4,7 +4,6 @@ input_str: .space 1001
 .text
 main:
 # forward slash ascii: 47
-# question mark ascii: 63
 # newline ascii: 10
 
 li $v0,8 # read string
@@ -29,6 +28,12 @@ sub_a: # subprogram to process entire input into substrings
 ################################################################
 lw $t0,0($sp)
 
+sub_a_loop:
+    print_unrecognized_input:
+        li $v0,11 # print char
+        li $a0,63 # question mark ascii
+        syscall
+j sub_a_loop
 jr $ra
 
 
