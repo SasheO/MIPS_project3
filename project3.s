@@ -48,7 +48,8 @@ sub_a: # subprogram to process entire input into substrings
         add $t0,$t0,-1
         sw $t0,0($sp)
         add $t0,$t0,1
-
+        jal sub_b
+        addi $sp,$sp,4
 
         sw 
         print_unrecognized_input:
