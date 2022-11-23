@@ -76,24 +76,23 @@ sub_b: # subprogram to process each substring
 #           third word: unsigned number of valid chars
 #           fourth word: indentation to last char used
 #       
-# temporary regesters used: $t0,$t1,$t2,$t3,$t4,$t5,$t6,$t7,$t8,$t9
+# temporary regesters used: $t0,$t1,$t2,$t3,$t4
 #
 #
 # called by sub_a
 # calls none
 ##################################################################
 
-li $t9,0 # initialized to invalid - holds whether string is invalid (0) or not (non-zero)
-li $t8,0 # initialized to 0 - holds running sum
+li $t0,0 # initialized to invalid - holds whether string is invalid (0) or not (non-zero)
+li $t1,0 # initialized to 0 - holds running sum
 li $t2,0 # will hold how many valid characters found
 li $t3,0 # will hold 1 if spaces found after first non-space char
-li $t6,10 # will hold enter character
-li $t7,26 # will hold the value of base 26 to multiply base-26 numbers by for the sum
 
 loop:
     lb $t0,0($a0) # load character at this of string into $t0
-    beq $t0,$zero,exit_subprogram # when null char is read
-    beq $t0,$t6,exit_subprogram # when enter char is read in case less than 1000 chars read and the user clicks enter
+    beq $t0,$zero,end_of_string # when null char is read, go to end_of_string
+    li $t4,10 # holds enter ascii character
+    beq $t0,$t4,end_of_string # when enter char is read in case less than 1000 chars read and the user clicks enter
     addi $a0,$a0,1 # increment the address in $a0 by one to move onto next character in the next loop
 
 jr $ra
