@@ -84,7 +84,7 @@ sub_b: # subprogram to process each substring
 #           third word: unsigned number of valid chars
 #           fourth word: indentation to last char used, stores -1 if end of string
 #       
-# temporary regesters used: $t0,$t1,$t2,$t3,$t4,$t5
+# registers used: $a0,$t0,$t1,$t2,$t3,$t4,$t5
 #
 #
 # called by sub_a
@@ -153,12 +153,12 @@ end_of_string:
     sw $t4,16($sp)
 
 add_to_running_sum:
-    bne $t3,0,for_non_valid_inputs # if spaces/tabs are sandwiched between chars, it is a non-valid input
+    bne $t3,0,for_non_valid_substrings # if spaces/tabs are sandwiched between chars, it is a non-valid input
     li $t0,1 # valid chars have been found
     addi $t2,$t2,1 # increment number of valid characters found
     # check if too many valid chars found (5+)
     li $t4,5
-    beq $t2,$t4,for_non_valid_inputs
+    beq $t2,$t4,for_non_valid_substrings
     li $t4,26
     mul $t1,$t1,$t4 # multiple previous sum by power of 26 since this converts to base 26 number
     addu $t1,$t1,$t5 # add current valid digit stored in $t5
