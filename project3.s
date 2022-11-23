@@ -110,10 +110,14 @@ loop:
         slti $t4,$t5,58 # check if character <= ascii code for 9 # the string char in $t5 should be less than or equal to '9' char i.e. $t4 should be 1
         beq $t4,$zero,check_a_to_p # if $t4 0 instead of 1, do the next check
 
+        addi $t5,$t5,-48 # convert ascii value to integer (0-9 ascii: 48-57)
+        j add_to_running_sum # j to segment of loop that adds char value to value of $v1, the running sum
+
 end_of_string:
     li $t4,-1
     sw $t4,16($sp)
 
+add_to_running_sum:
 
 exit_sub_b:
     jr $ra
