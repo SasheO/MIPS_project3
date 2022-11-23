@@ -45,12 +45,12 @@ sub_a: # subprogram to process entire input into substrings
         beq $t1,$t2,sub_a_loop # loop again if curren character is space
 
         # store address of first non-space tab string to stack and call sub_b
-        addi $sp,$sp,-4 
+        addi $sp,$sp,-20 # make space to store input and the four outputs of sub_b
         add $t0,$t0,-1
         sw $t0,0($sp)
         add $t0,$t0,1
         jal sub_b
-        addi $sp,$sp,4
+        addi $sp,$sp,20
 
         # TODO: read output of sub_b
 
@@ -95,4 +95,8 @@ loop:
     beq $t0,$t4,end_of_string # when enter char is read in case less than 1000 chars read and the user clicks enter
     addi $a0,$a0,1 # increment the address in $a0 by one to move onto next character in the next loop
 
-jr $ra
+end_of_string:
+
+
+exit_sub_b:
+    jr $ra
