@@ -90,4 +90,10 @@ li $t3,0 # will hold 1 if spaces found after first non-space char
 li $t6,10 # will hold enter character
 li $t7,26 # will hold the value of base 26 to multiply base-26 numbers by for the sum
 
+loop:
+    lb $t0,0($a0) # load character at this of string into $t0
+    beq $t0,$zero,exit_subprogram # when null char is read
+    beq $t0,$t6,exit_subprogram # when enter char is read in case less than 1000 chars read and the user clicks enter
+    addi $a0,$a0,1 # increment the address in $a0 by one to move onto next character in the next loop
+
 jr $ra
