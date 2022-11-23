@@ -97,7 +97,7 @@ li $t2,0 # will hold how many valid characters found
 li $t3,0 # will hold 1 if spaces found after first non-space char
 lw $a0,0($sp) # load address stored in position 1 stack
 
-loop:
+sub_b_loop:
     lb $t5,0($a0) # load character at this of string into $t5
     beq $t5,$zero,end_of_string # when null char is read, go to end_of_string
     li $t4,10 # holds enter ascii character
@@ -145,7 +145,7 @@ loop:
         space_found_after_or_between_valid_chars:
             beq $t0,$zero,loop # if no valid chars have been found i.e. space/tab is leading, not sandwiched between valid chars, loop again
             addi $t3,$t3,1 # if space/tab is after valid character, update t3
-            j loop
+            j sub_b_loop
 
 end_of_string:
     li $t4,-1
@@ -158,9 +158,10 @@ add_to_running_sum:
     # check if too many valid chars found (5+)
     li $t4,5
     beq $t2,$t4,for_non_valid_inputs
-    mul $t1,$t1,$t7 # multiple previous sum by power of 26
-    addu $t1,$t1,$t0 # add current valid digit
-    j loop
+    li $t4,26
+    mul $t1,$t1,$t4 # multiple previous sum by power of 26 since this converts to base 26 number
+    addu $t1,$t1,$t5 # add current valid digit stored in $t5
+    j sub_b_loop
 
 exit_sub_b:
     jr $ra
