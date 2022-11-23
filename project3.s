@@ -45,6 +45,19 @@ sub_b: # subprogram to process each substring
 #################################################################
 # comment
 #
+# inputs used: address of first valid character in string from stack
+# outputs used:
+#           stack: (4 words)
+#           first word: whether string is invalid (0) or not (non-zero)
+#           second word: the convert_string_to_decimal value of string, if valid
+#           third word: unsigned number of valid chars
+#           fourth word: indentation to last char used
+#       
+# temporary regesters used: $t0,$t1,$t2,$t3,$t4,$t5,$t6,$t7
+#
+#
+# called by main
+# calls none
 ##################################################################
 
 jr $ra
