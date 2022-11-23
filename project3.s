@@ -122,6 +122,13 @@ loop:
         addi $t5,$t5,-87 # convert ascii value to integer (a-p ascii: 97-112; a-p here: 10-25)
         j add_to_running_sum # j to segment of loop that adds char value to value of $v1, the running sum
 
+    check_A_to_P:
+        slti $t4,$t5,65 # the string char in $t5 should be greater than or equal to 'A' char i.e. $t4 should be 0
+        bne $t4,$zero,for_non_valid_inputs # if $t4 not 0, do the next check
+        slti $t4,$t5,81 # check if character <= ascii code for 'P' # the string char in $t5 should be less than or equal to 'p' char i.e. $t4 should be 1
+        beq $t4,$zero,for_non_valid_inputs # if $t4 0 instead of 1, do the next check
+
+
 end_of_string:
     li $t4,-1
     sw $t4,16($sp)
