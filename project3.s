@@ -156,7 +156,11 @@ add_to_running_sum:
     li $t0,1 # valid chars have been found
     addi $t2,$t2,1 # increment number of valid characters found
     # check if too many valid chars found (5+)
-    li $t5,5
+    li $t4,5
+    beq $t2,$t4,for_non_valid_inputs
+    mul $t1,$t1,$t7 # multiple previous sum by power of 26
+    addu $t1,$t1,$t0 # add current valid digit
+    j loop
 
 exit_sub_b:
     jr $ra
