@@ -131,6 +131,13 @@ loop:
         addi $t5,$t5,-55 # convert ascii value to integer (A-P ascii: 65-80; A-P here: 10-25)
         j add_to_running_sum # j to segment of loop that adds char value to value of $v1, the running sum
 
+    for_non_valid_inputs:
+        # check if space char, if not it is invalid. input is invalid
+        li $t4,32 # holds space char ascii value
+        beq $t5,$t4,space_found_after_or_between_valid_chars # if current char is space, update $t3
+        li $t4,9 # holds tab char ascii value
+        beq $t5,$t4,space_found_after_or_between_valid_chars # if current char is space, update $t3
+
 end_of_string:
     li $t4,-1
     sw $t4,16($sp)
