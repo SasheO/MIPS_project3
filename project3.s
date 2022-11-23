@@ -88,5 +88,6 @@ li $v1,0 # initialized to 0 - running sum
 li $t2,0 # will hold how many valid characters found
 li $t3,0 # will hold 1 if spaces found after first non-space char
 li $t6,10 # will hold enter character
+li $t7,26 # will hold the value of base 26 to multiply base-26 numbers by for the sum
 
 jr $ra
