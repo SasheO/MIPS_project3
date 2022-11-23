@@ -5,6 +5,8 @@ input_str: .space 1001
 main:
 # forward slash ascii: 47
 # newline ascii: 10
+# space ascii: 32
+# tab ascii: 9
 
 li $v0,8 # read string
 la $a0,input_str
@@ -23,22 +25,30 @@ sub_a: # subprogram to process entire input into substrings
 #################################################################
 # sub_a parses the input string and prints out the integers and error messages one by one, with them separated by single comma
 # input used: address of input string from stack
-# temporary registers used: $t0
+# temporary registers used: $t0, $t1
 # outputs: none
 #
 # called by main
 # calls sub_b
 ################################################################
-    lw $t0,0($sp)
+    lw $t0,0($sp) # $t0 contains the address of the string
+
 
     sub_a_loop:
+        lb $t1,0($t0) # load character at this of string into $t1
+        addi $t0,$t0,1 # increment the address in $a0 by one to move onto next character in the next loop
+
+        li $t2,9 # $t2 contains ascii value of tab
+        beq $t1,$t2,sub_a_loop # loop again if character in $t1 is tab
+
         print_unrecognized_input:
             li $v0,11 # print char
             li $a0,63 # question mark ascii
             syscall
     j sub_a_loop
     
-    jr $ra
+    exit_sub_a:
+        jr $ra
 
 
 sub_b: # subprogram to process each substring
@@ -56,7 +66,7 @@ sub_b: # subprogram to process each substring
 # temporary regesters used: $t0,$t1,$t2,$t3,$t4,$t5,$t6,$t7
 #
 #
-# called by main
+# called by sub_a
 # calls none
 ##################################################################
 
