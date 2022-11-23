@@ -76,7 +76,7 @@ sub_b: # subprogram to process each substring
 #################################################################
 # comment
 #
-# inputs used: address of first valid character in string from stack
+# inputs used: 0th word: address of first valid character in string from stack
 # outputs used:
 #           stack: (4 words)
 #           first word: whether string is invalid (0) or not (non-zero)
@@ -137,6 +137,15 @@ loop:
         beq $t5,$t4,space_found_after_or_between_valid_chars # if current char is space, update $t3
         li $t4,9 # holds tab char ascii value
         beq $t5,$t4,space_found_after_or_between_valid_chars # if current char is space, update $t3
+
+        # any other character is invalid
+        sw $zero,4($sp) # store the validity of the substring as non-valid
+        jr $ra
+
+        space_found_after_or_between_valid_chars:
+            beq $t0,$zero,loop # if no valid chars have been found i.e. space/tab is leading, not sandwiched between valid chars, loop again
+            addi $t3,$t3,1 # if space/tab is after valid character, update t3
+            j loop
 
 end_of_string:
     li $t4,-1
