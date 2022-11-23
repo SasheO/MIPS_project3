@@ -128,6 +128,8 @@ loop:
         slti $t4,$t5,81 # check if character <= ascii code for 'P' # the string char in $t5 should be less than or equal to 'p' char i.e. $t4 should be 1
         beq $t4,$zero,for_non_valid_inputs # if $t4 0 instead of 1, do the next check
 
+        addi $t5,$t5,-55 # convert ascii value to integer (A-P ascii: 65-80; A-P here: 10-25)
+        j add_to_running_sum # j to segment of loop that adds char value to value of $v1, the running sum
 
 end_of_string:
     li $t4,-1
