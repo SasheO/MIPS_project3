@@ -148,6 +148,7 @@ sub_b_loop:
             j sub_b_loop
 
 end_of_string:
+    # TODO: store in stack the validity of string, the running sum/decimal value, the number of valid chars
     li $t4,-1
     sw $t4,16($sp)
 
@@ -164,4 +165,5 @@ add_to_running_sum:
     j sub_b_loop
 
 exit_sub_b:
+    # TODO: store in stack the validity of string, the running sum/decimal value, the number of valid chars
     jr $ra
