@@ -76,15 +76,15 @@ sub_b: # subprogram to process each substring
 #           third word: unsigned number of valid chars
 #           fourth word: indentation to last char used
 #       
-# temporary regesters used: $t0,$t1,$t2,$t3,$t4,$t5,$t6,$t7
+# temporary regesters used: $t0,$t1,$t2,$t3,$t4,$t5,$t6,$t7,$t8,$t9
 #
 #
 # called by sub_a
 # calls none
 ##################################################################
 
-li $v0,0 # initialized to invalid
-li $v1,0 # initialized to 0 - running sum
+li $t9,0 # initialized to invalid - holds whether string is invalid (0) or not (non-zero)
+li $t8,0 # initialized to 0 - holds running sum
 li $t2,0 # will hold how many valid characters found
 li $t3,0 # will hold 1 if spaces found after first non-space char
 li $t6,10 # will hold enter character
