@@ -119,6 +119,9 @@ loop:
         slti $t4,$t5,113 # check if character <= ascii code for 'p' # the string char in $t5 should be less than or equal to 'p' char i.e. $t4 should be 1
         beq $t4,$zero,check_A_to_P # if $t4 0 instead of 1, do the next check
 
+        addi $t5,$t5,-87 # convert ascii value to integer (a-p ascii: 97-112; a-p here: 10-25)
+        j add_to_running_sum # j to segment of loop that adds char value to value of $v1, the running sum
+
 end_of_string:
     li $t4,-1
     sw $t4,16($sp)
