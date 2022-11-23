@@ -104,6 +104,12 @@ loop:
     beq $t5,$t4,end_of_string # when enter char is read in case less than 1000 chars read and the user clicks enter
     addi $a0,$a0,1 # increment the address in $a0 by one to move onto next character in the next loop
 
+    check_0_to_9:
+        slti $t4,$t5,48 # the string char in $t5 should be greater than or equal to '0' char i.e. $t4 should be 0
+        bne $t4,$zero,check_a_to_p # if $t4 not 0, do the next check
+        slti $t4,$t5,58 # check if character <= ascii code for 9 # the string char in $t5 should be less than or equal to '9' char i.e. $t4 should be 1
+        beq $t4,$zero,check_a_to_p # if $t4 0 instead of 1, do the next check
+
 end_of_string:
     li $t4,-1
     sw $t4,16($sp)
