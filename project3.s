@@ -40,6 +40,8 @@ sub_a: # subprogram to process entire input into substrings
 
         li $t2,9 # $t2 contains ascii value of tab
         beq $t1,$t2,sub_a_loop # loop again if character in $t1 is tab
+        li $t2,32 # $t2 contains ascii value of space
+        beq $t1,$t2,sub_a_loop # loop again if character in $t1 is space
 
         print_unrecognized_input:
             li $v0,11 # print char
