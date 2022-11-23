@@ -105,6 +105,8 @@ loop:
     addi $a0,$a0,1 # increment the address in $a0 by one to move onto next character in the next loop
 
 end_of_string:
+    li $t4,-1
+    sw $t4,16($sp)
 
 
 exit_sub_b:
