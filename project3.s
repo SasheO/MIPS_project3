@@ -14,9 +14,8 @@ syscall
 
 addi $sp,$sp,-4
 sw $a0,0($sp)
-addi $sp,$sp,4
-
 jal sub_a
+addi $sp,$sp,4
 
 li $v0, 10 # exit program syscall
 syscall
@@ -25,8 +24,10 @@ sub_a: # subprogram to process entire input into substrings
 #################################################################
 # sub_a parses the input string and prints out the integers and error messages one by one, with them separated by single comma
 # input used: address of input string from stack
+# temporary registers used: $t0
 # outputs: none
 ################################################################
+lw $t0,0($sp)
 
 jr $ra
 
