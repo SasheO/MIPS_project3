@@ -39,9 +39,9 @@ sub_a: # subprogram to process entire input into substrings
         addi $t0,$t0,1 # increment the address in $a0 by one to move onto next character in the next loop
 
         li $t2,9 # $t2 contains ascii value of tab
-        beq $t1,$t2,sub_a_loop # loop again if character in $t1 is tab
+        beq $t1,$t2,sub_a_loop # loop again if current character is tab
         li $t2,32 # $t2 contains ascii value of space
-        beq $t1,$t2,sub_a_loop # loop again if character in $t1 is space
+        beq $t1,$t2,sub_a_loop # loop again if curren character is space
 
         print_unrecognized_input:
             li $v0,11 # print char
