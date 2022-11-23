@@ -25,16 +25,20 @@ sub_a: # subprogram to process entire input into substrings
 # input used: address of input string from stack
 # temporary registers used: $t0
 # outputs: none
+#
+# called by main
+# calls sub_b
 ################################################################
-lw $t0,0($sp)
+    lw $t0,0($sp)
 
-sub_a_loop:
-    print_unrecognized_input:
-        li $v0,11 # print char
-        li $a0,63 # question mark ascii
-        syscall
-j sub_a_loop
-jr $ra
+    sub_a_loop:
+        print_unrecognized_input:
+            li $v0,11 # print char
+            li $a0,63 # question mark ascii
+            syscall
+    j sub_a_loop
+    
+    jr $ra
 
 
 sub_b: # subprogram to process each substring
