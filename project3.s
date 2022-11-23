@@ -96,6 +96,8 @@ sub_b: # subprogram to process each substring
     li $t2,0 # will hold how many valid characters found
     li $t3,0 # will hold 1 if spaces found after first non-space char
     lw $a0,0($sp) # load address stored in position 1 stack
+    # $t4 is used for any temporary comparisons, storage, multiplication etc.
+    # $t5 stores the current character (its ascii value)
 
     sub_b_loop:
         lb $t5,0($a0) # load character at this of string into $t5
