@@ -124,14 +124,14 @@ loop:
 
     check_A_to_P:
         slti $t4,$t5,65 # the string char in $t5 should be greater than or equal to 'A' char i.e. $t4 should be 0
-        bne $t4,$zero,for_non_valid_inputs # if $t4 not 0, do the next check
+        bne $t4,$zero,for_non_valid_substrings # if $t4 not 0, do the next check
         slti $t4,$t5,81 # check if character <= ascii code for 'P' # the string char in $t5 should be less than or equal to 'p' char i.e. $t4 should be 1
-        beq $t4,$zero,for_non_valid_inputs # if $t4 0 instead of 1, do the next check
+        beq $t4,$zero,for_non_valid_substrings # if $t4 0 instead of 1, do the next check
 
         addi $t5,$t5,-55 # convert ascii value to integer (A-P ascii: 65-80; A-P here: 10-25)
         j add_to_running_sum # j to segment of loop that adds char value to value of $v1, the running sum
 
-    for_non_valid_inputs:
+    for_non_valid_substrings:
         # check if space char, if not it is invalid. input is invalid
         li $t4,32 # holds space char ascii value
         beq $t5,$t4,space_found_after_or_between_valid_chars # if current char is space, update $t3
