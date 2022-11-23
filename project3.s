@@ -139,7 +139,7 @@ loop:
         beq $t5,$t4,space_found_after_or_between_valid_chars # if current char is space, update $t3
 
         # any other character is invalid
-        sw $zero,4($sp) # store the validity of the substring as non-valid
+        sw $zero,4($sp) # store the validity of the substring as non-valid (0)
         jr $ra
 
         space_found_after_or_between_valid_chars:
@@ -152,6 +152,11 @@ end_of_string:
     sw $t4,16($sp)
 
 add_to_running_sum:
+    bne $t3,0,for_non_valid_inputs # if spaces/tabs are sandwiched between chars, it is a non-valid input
+    li $t0,1 # valid chars have been found
+    addi $t2,$t2,1 # increment number of valid characters found
+    # check if too many valid chars found (5+)
+    li $t5,5
 
 exit_sub_b:
     jr $ra
