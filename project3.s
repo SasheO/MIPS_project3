@@ -37,7 +37,7 @@ sub_a: # subprogram to process entire input into substrings
 
     sub_a_loop:
         lb $t1,0($t0) # load character at this of string into $t1
-        addi $t0,$t0,1 # increment the address in $a0 by one to move onto next character in the next loop
+        addi $t0,$t0,1 # increment by 1 so that $t0 stores address of next character in loop
 
         li $t2,9 # $t2 contains ascii value of tab
         beq $t1,$t2,sub_a_loop # loop again if current character is tab
@@ -53,11 +53,19 @@ sub_a: # subprogram to process entire input into substrings
         addi $sp,$sp,20
 
         # TODO: read output of sub_b
+        lw $t0,4($sp)
+        beq $t0,$zero,print_unrecognized_input
+        j print_decimal_char
 
         print_unrecognized_input:
             li $v0,11 # print char
             li $a0,63 # question mark ascii
             syscall
+            # todo: check if end of string (fourth word). if end of string, 
+        
+        print_decimal_char:
+            # TODO: fill in
+
     j sub_a_loop
     
     exit_sub_a:
@@ -74,7 +82,7 @@ sub_b: # subprogram to process each substring
 #           first word: whether string is invalid (0) or not (non-zero)
 #           second word: the convert_string_to_decimal value of string, if valid
 #           third word: unsigned number of valid chars
-#           fourth word: indentation to last char used
+#           fourth word: indentation to last char used, stores -1 if end of string
 #       
 # temporary regesters used: $t0,$t1,$t2,$t3,$t4,$t5
 #
@@ -87,7 +95,7 @@ li $t0,0 # initialized to invalid - holds whether string is invalid (0) or not (
 li $t1,0 # initialized to 0 - holds running sum
 li $t2,0 # will hold how many valid characters found
 li $t3,0 # will hold 1 if spaces found after first non-space char
-# TODO: load address of first character passed in into $a0
+lw $a0,0($sp) # load address stored in position 1 stack
 
 loop:
     lb $t5,0($a0) # load character at this of string into $t5
