@@ -71,10 +71,12 @@ sub_a: # subprogram to process entire input into substrings
                 j sub_a_loop_2
             
             print_decimal_char:
-                beq $s0,$zero,print_substring_output #
+                beq $s0,$zero,print_substring_output # if it is the first substring, $s0 will be zero so it will skip the instructions to print a comma
+                
                 li $v0,11 # print char
-                li $a0,44 # comma mark ascii
+                li $a0,44 # comma ascii
                 syscall
+
                 print_substring_output:
                     li $v0,1 # print integer
                     lw $a0,12($sp) # the number of valid characters found
