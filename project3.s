@@ -34,6 +34,7 @@ sub_a: # subprogram to process entire input into substrings
     ################################################################
     lw $t0,0($sp) # $t0 contains the address of the string
     add $fp,$sp,$zero # store frame information
+    addi $sp,$sp,-16 # make space to store input and the four outputs of sub_b
 
 
         sub_a_loop_1:
@@ -48,12 +49,10 @@ sub_a: # subprogram to process entire input into substrings
 
 
             # store address of first non-space tab string to stack and call sub_b
-            addi $sp,$sp,-16 # make space to store input and the four outputs of sub_b
             add $t0,$t0,-1
             sw $t0,0($sp)
             add $t0,$t0,1
             jal sub_b
-            addi $sp,$sp,16
 
             # TODO: read output of sub_b
             lw $t0,4($sp)
@@ -73,6 +72,7 @@ sub_a: # subprogram to process entire input into substrings
         j sub_a_loop
     
     exit_sub_a:
+        addi $sp,$sp,16
         jr $ra
 
 
@@ -168,4 +168,8 @@ sub_b: # subprogram to process each substring
 
     exit_sub_b:
         # TODO: store in stack the validity of string, the running sum/decimal value, the number of valid chars
+        li $t0,1
+        sw $t0,4($sp) # store the validity of the substring as valid (non-zero)
+        sw $t1,8($sp) # store the running sum
+        sw $t2,12($sp) # store the number of valid characters found
         jr $ra
