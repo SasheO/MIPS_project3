@@ -68,6 +68,7 @@ sub_a: # subprogram to process entire input into substrings
             
             print_decimal_char:
                 # TODO: fill in
+                # TODO: fill in printing a comma before if it isnt the first substring
 
         j sub_a_loop
     
@@ -103,11 +104,11 @@ sub_b: # subprogram to process each substring
 
     sub_b_loop:
         lb $t5,0($t9) # load character at this of string into $t5
-        beq $t5,$zero,end_of_string # when null char is read, go to end_of_string
+        beq $t5,$zero,exit_sub_b # when null char is read, go to exit_sub_b
         li $t4,10 # holds enter/newline ascii character
-        beq $t5,$t4,end_of_string # when enter char is read in case less than 1000 chars read and the user clicks enter
+        beq $t5,$t4,exit_sub_b # when enter char is read in case less than 1000 chars read and the user clicks enter
         li $t4,44 # holds comma acii character
-        beq $t5,$t4,end_of_string # when enter comma is read, it is the end of the substring
+        beq $t5,$t4,exit_sub_b # when enter comma is read, it is the end of the substring
         addi $t9,$t9,1 # increment the address in $t9 by one to move onto next character in the next loop
 
         check_0_to_9:
@@ -152,11 +153,6 @@ sub_b: # subprogram to process each substring
                 beq $t0,$zero,loop # if no valid chars have been found i.e. space/tab is leading, not sandwiched between valid chars, loop again
                 addi $t3,$t3,1 # if space/tab is after valid character, update t3
                 j sub_b_loop
-
-    end_of_string:
-        # TODO: store in stack the validity of string, the running sum/decimal value, the number of valid chars
-        li $t4,-1
-        sw $t4,16($sp)
 
     add_to_running_sum:
         bne $t3,0,for_non_valid_substrings # if spaces/tabs are sandwiched between chars, it is a non-valid input
