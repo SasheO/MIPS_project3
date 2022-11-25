@@ -43,7 +43,7 @@ sub_a: # subprogram to process entire input into substrings
             beq $t1,$t2,sub_a_loop_1 # loop again if current character is tab
             li $t2,32 # $t2 contains ascii value of space
             beq $t1,$t2,sub_a_loop_1 # loop again if curren character is space
-
+            beq $t1,$zero,exit_sub_a # exit loop when you get to the end of the string
 
 
             # store address of first non-space tab string to stack and call sub_b
@@ -68,7 +68,7 @@ sub_a: # subprogram to process entire input into substrings
             print_decimal_char:
                 # TODO: fill in
 
-        j sub_a_loop_1
+        j sub_a_loop
     
     exit_sub_a:
         jr $ra
@@ -84,7 +84,6 @@ sub_b: # subprogram to process each substring
     #           first word: whether string is invalid (0) or not (non-zero)
     #           second word: the convert_string_to_decimal value of string, if valid
     #           third word: unsigned number of valid chars
-    #           fourth word: indentation to last char used, stores -1 if end of string
     #       
     # registers used: $a0,$t0,$t1,$t2,$t3,$t4,$t5
     #
