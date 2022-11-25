@@ -34,6 +34,8 @@ sub_a: # subprogram to process entire input into substrings
     ################################################################
     lw $t0,0($sp) # $t0 contains the address of the string
     add $fp,$sp,$zero # store frame information
+    addi $sp,$sp,-4
+    sw $ra,0($sp)
     addi $sp,$sp,-16 # make space to store input and the four outputs of sub_b
 
 
@@ -90,6 +92,8 @@ sub_a: # subprogram to process entire input into substrings
     
     exit_sub_a:
         addi $sp,$sp,16
+        lw $ra,0($sp)
+        addi $sp,$sp,4
         jr $ra
 
 
