@@ -63,23 +63,25 @@ sub_a: # subprogram to process entire input into substrings
                 li $v0,11 # print char
                 li $a0,63 # question mark ascii
                 syscall
-                # todo: check if end of string (fourth word). if end of string, 
+                lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
+                j sub_a_loop_2
             
             print_decimal_char:
                 li $v0,11 # print char
                 li $a0,47 # forward slash mark ascii
                 syscall
                 # TODO: fill in printing a comma before if it isnt the first substring
+                lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
+                j sub_a_loop_2
 
         sub_a_loop_2:
             # reads address from sub_b output (in stack), loops until comma, null char, enter then starts loop again fot next substring
-            lw $t0,0($sp) # $t0 contains the address of the first character of the substring
             lb $t1,0($t0) # load character at this of string into $t1
             addi $t0,$t0,1 # increment by 1 so that $t0 stores address of next character in loop
             li $t2,44 # $t2 contains ascii value of comma
             beq $t1,$t2,sub_a_loop_1 # loop again if current character is tab
             li $t2,10 # $t2 contains ascii value of enter/newline
-            beq $t1,$t2,sub_a_loop_1 # loop again if curren character is space
+            beq $t1,$t2,exit_sub_a # exit at the end of string
             beq $t1,$zero,exit_sub_a # exit loop when you get to the end of the string
             j sub_a_loop_2
 
