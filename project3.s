@@ -85,7 +85,7 @@ sub_b: # subprogram to process each substring
     #           second word: the convert_string_to_decimal value of string, if valid
     #           third word: unsigned number of valid chars
     #       
-    # registers used: $a0,$t0,$t1,$t2,$t3,$t4,$t5
+    # registers used: $t0,$t1,$t2,$t3,$t4,$t5,$t9
     #
     #
     # called by sub_a
@@ -96,16 +96,16 @@ sub_b: # subprogram to process each substring
     li $t1,0 # initialized to 0 - holds running sum
     li $t2,0 # will hold how many valid characters found
     li $t3,0 # will hold 1 if spaces found after first non-space char
-    lw $a0,0($sp) # load address stored in position 1 stack
+    lw $t9,0($sp) # load address stored in position 1 stack into t9
     # $t4 is used for any temporary comparisons, storage, multiplication etc.
     # $t5 stores the current character (its ascii value)
 
     sub_b_loop:
-        lb $t5,0($a0) # load character at this of string into $t5
+        lb $t5,0($t9) # load character at this of string into $t5
         beq $t5,$zero,end_of_string # when null char is read, go to end_of_string
         li $t4,10 # holds enter ascii character
         beq $t5,$t4,end_of_string # when enter char is read in case less than 1000 chars read and the user clicks enter
-        addi $a0,$a0,1 # increment the address in $a0 by one to move onto next character in the next loop
+        addi $t9,$t9,1 # increment the address in $t9 by one to move onto next character in the next loop
 
         check_0_to_9:
             slti $t4,$t5,48 # the string char in $t5 should be greater than or equal to '0' char i.e. $t4 should be 0
