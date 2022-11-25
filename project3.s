@@ -65,7 +65,11 @@ sub_a: # subprogram to process entire input into substrings
 
             print_unrecognized_input:
                 beq $s0,$zero,print_question_mark # if it is the first substring, $s0 will be zero so it will skip the instructions to print a comma
-
+                
+                li $v0,11 # print char
+                li $a0,44 # comma ascii
+                syscall
+                
                 print_question_mark:
                     li $v0,11 # print char
                     li $a0,63 # question mark ascii
