@@ -71,21 +71,24 @@ sub_a: # subprogram to process entire input into substrings
                 j sub_a_loop_2
             
             print_decimal_char:
-                li $v0,1 # print integer
-                lw $a0,12($sp) # the number of valid characters found
-                syscall
+                beq $s0,$zero,else_first_substring
+                
+                else_first_substring:
+                    li $v0,1 # print integer
+                    lw $a0,12($sp) # the number of valid characters found
+                    syscall
 
-                li $v0,11 # print char
-                li $a0,47 # forward slash mark ascii
-                syscall
+                    li $v0,11 # print char
+                    li $a0,47 # forward slash mark ascii
+                    syscall
 
-                li $v0,1 # print integer
-                lw $a0,8($sp) # the base-N number
-                syscall
+                    li $v0,1 # print integer
+                    lw $a0,8($sp) # the base-N number
+                    syscall
 
-                # TODO: fill in printing a comma before if it isnt the first substring
-                lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
-                j sub_a_loop_2
+                    # TODO: fill in printing a comma before if it isnt the first substring
+                    lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
+                    j sub_a_loop_2
 
         sub_a_loop_2:
             # reads address from sub_b output (in stack), loops until comma, null char, enter then starts loop again fot next substring
