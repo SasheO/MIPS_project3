@@ -69,13 +69,18 @@ sub_a: # subprogram to process entire input into substrings
                 j sub_a_loop_2
             
             print_decimal_char:
-                li $v0,1
-                lw $a0,12($sp) # load the number of valid characters found
+                li $v0,1 # print integer
+                lw $a0,12($sp) # the number of valid characters found
                 syscall
+
                 li $v0,11 # print char
                 li $a0,47 # forward slash mark ascii
                 syscall
-                lw $a0,8($sp) # load the running sum
+
+                li $v0,1 # print integer
+                lw $a0,8($sp) # the base-N number
+                syscall
+
                 # TODO: fill in printing a comma before if it isnt the first substring
                 lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
                 j sub_a_loop_2
@@ -195,6 +200,6 @@ sub_b: # subprogram to process each substring
         # TODO: store in stack the validity of string, the running sum/decimal value, the number of valid chars
         li $t0,1
         sw $t0,4($sp) # store the validity of the substring as valid (non-zero)
-        sw $t1,8($sp) # store the running sum
+        sw $t1,8($sp) # store the running sum (a base-N number)
         sw $t2,12($sp) # store the number of valid characters found
         jr $ra
