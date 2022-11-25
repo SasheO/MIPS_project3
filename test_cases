@@ -1,0 +1,48 @@
+n = 26 + (03004056%11) = 26 + 0 = 26
+number to multiply by = n - 25 = 26 - 25 = 1
+
+base: 26
+
+characters:
+0-9
+aA 10
+bB 11
+cC 12
+dD 13
+eE 14
+fF 15
+gG 16
+hH 17
+iI 18
+jJ 19
+kK 20
+lL 21
+mM 22
+nN 23
+oO 24
+pP 25
+
+Test cases input- output (single substring):
+a- 1/10
+ab- 2/271
+a b- ?
+axyx- ?
+a@p- ?
+1a- 2/36
+PPPP- 4/456975
+- ?
+q- ?
+      a                                                                    - 1/10
+          111                             -(mix of tabs and spaces) 3/703
+                    111       1                      - ?
+          (all spaces)- ?
+   u1   b -?
+1Mp0- 4/33098
+00000- ?
+0000- 4/0
+9999- 4/164511
+
+Test cases input- output (multiple substring):
+0, 1, 2- 1/0,1/1,1/2
+100,200 - 3/676,6/1352
+1Mp0,,12345,axyz,a b,P00a - 4/33098,?,?,?,?,4/439410
