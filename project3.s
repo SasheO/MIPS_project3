@@ -22,7 +22,7 @@ addi $sp,$sp,4
 li $v0, 10 # exit program syscall
 syscall
 
-sub_a: # subprogram to process entire input into substrings
+sub_a:
     #################################################################
     # sub_a parses the input string and prints out the integers and error messages one by one, with them separated by single comma
     # input used: address of input string from stack
@@ -40,7 +40,7 @@ sub_a: # subprogram to process entire input into substrings
     lw $t0,0($sp) # $t0 contains the address of the input string from stack
     add $fp,$sp,$zero # store frame information
     addi $sp,$sp,-8
-    sw $ra,0($sp)
+    sw $ra,0($sp) # store return address since there is a nested call
     sw $s0,4($sp) # preserve $s0 value
     li $s0,0 # will hold 0 if this is the first substring, non-zero otherwise
     addi $sp,$sp,-16 # make space to store input and the four outputs of sub_b
@@ -58,9 +58,8 @@ sub_a: # subprogram to process entire input into substrings
 
 
             # store address of first non-space tab string to stack and call sub_b
-            add $t0,$t0,-1
+            add $t0,$t0,-1 # $t0 previously contained the address of the next character in loop. subtract 1 to pass the current character into  sub_b
             sw $t0,0($sp)
-            add $t0,$t0,1
             jal sub_b
 
             # TODO: read output of sub_b
@@ -111,35 +110,34 @@ sub_a: # subprogram to process entire input into substrings
             lb $t1,0($t0) # load character at this of string into $t1
             addi $t0,$t0,1 # increment by 1 so that $t0 stores address of next character in loop
             li $t2,44 # $t2 contains ascii value of comma
-            addi $s0,$s0,1
+            addi $s0,$s0,1 # add 1 so that if the current character is a comma, $s0 is updated
             beq $t1,$t2,sub_a_loop_1 # loop again if current character is comma
-            addi $s0,$s0,-1
+            addi $s0,$s0,-1 # if the previous instruction isn't branched, the current character is not a comma so restore the previous value of $s0 by subtracting 1
             li $t2,10 # $t2 contains ascii value of enter/newline
             beq $t1,$t2,exit_sub_a # exit at the end of string
             beq $t1,$zero,exit_sub_a # exit loop when you get to the end of the string
-            j sub_a_loop_2
+            j sub_a_loop_2 # close the loop
 
 
         j sub_a_loop
     
     exit_sub_a:
-        addi $sp,$sp,16
-        lw $ra,0($sp)
+        addi $sp,$sp,16 # restore memory used for all the input./output values used for sub_b 
+        lw $ra,0($sp) # resotre the return address register
         lw $s0,4($sp) # restore $s0 value
-        addi $sp,$sp,8
+        addi $sp,$sp,8 # restore the memory used for sub_a
         jr $ra
 
 
 sub_b: # subprogram to process each substring
     #################################################################
-    # comment
     #
     # inputs used: 0th word: address of first valid character in string from stack
     # outputs used:
     #           stack: (3 words)
-    #           first word: whether string is invalid (0) or not (non-zero)
-    #           second word: the convert_string_to_decimal value of string, if valid; the error message (a question mark) if not
-    #           third word: unsigned number of valid chars
+    #           first word 4($sp): whether string is invalid (0) or not (non-zero)
+    #           second word 8($sp): the convert_string_to_decimal value of string, if valid; the error message (a question mark) if not
+    #           third word 12($sp): unsigned number of valid chars
     #       
     # registers used: $t0,$t1,$t2,$t3,$t4,$t5,$t9
     #
@@ -227,6 +225,6 @@ sub_b: # subprogram to process each substring
         beq $t2,$zero,for_non_valid_substrings # if the substring is empty e.g ,, it is non-valid
         li $t0,1
         sw $t0,4($sp) # store the validity of the substring as valid (non-zero)
-        sw $t1,8($sp) # store the running sum (a base-N number)
+        sw $t1,8($sp) # store the running sum (a base 26 number)
         sw $t2,12($sp) # store the number of valid characters found
         jr $ra
