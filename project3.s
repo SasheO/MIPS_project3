@@ -7,6 +7,7 @@ main:
 # newline ascii: 10
 # space ascii: 32
 # tab ascii: 9
+# comma ascii: 44
 
 li $v0,8 # read string
 la $a0,input_str
@@ -103,8 +104,10 @@ sub_b: # subprogram to process each substring
     sub_b_loop:
         lb $t5,0($t9) # load character at this of string into $t5
         beq $t5,$zero,end_of_string # when null char is read, go to end_of_string
-        li $t4,10 # holds enter ascii character
+        li $t4,10 # holds enter/newline ascii character
         beq $t5,$t4,end_of_string # when enter char is read in case less than 1000 chars read and the user clicks enter
+        li $t4,44 # holds comma acii character
+        beq $t5,$t4,end_of_string # when enter comma is read, it is the end of the substring
         addi $t9,$t9,1 # increment the address in $t9 by one to move onto next character in the next loop
 
         check_0_to_9:
