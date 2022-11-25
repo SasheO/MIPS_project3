@@ -66,7 +66,9 @@ sub_a: # subprogram to process entire input into substrings
                 # todo: check if end of string (fourth word). if end of string, 
             
             print_decimal_char:
-                # TODO: fill in
+                li $v0,11 # print char
+                li $a0,47 # forward slash mark ascii
+                syscall
                 # TODO: fill in printing a comma before if it isnt the first substring
 
         j sub_a_loop
