@@ -1,0 +1,5 @@
+sub_a_loop
+- sub_a_loop_1: loops until first non-comma/space/tab character then sends the address to sub_b
+- sub_a_loop_2: reads address from sub_b output (in stack), loops until comma, null char, enter then starts loop again fot next substring
+
+sub_b
