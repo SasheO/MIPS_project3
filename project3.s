@@ -48,12 +48,12 @@ sub_a: # subprogram to process entire input into substrings
 
 
             # store address of first non-space tab string to stack and call sub_b
-            addi $sp,$sp,-20 # make space to store input and the four outputs of sub_b
+            addi $sp,$sp,-16 # make space to store input and the four outputs of sub_b
             add $t0,$t0,-1
             sw $t0,0($sp)
             add $t0,$t0,1
             jal sub_b
-            addi $sp,$sp,20
+            addi $sp,$sp,16
 
             # TODO: read output of sub_b
             lw $t0,4($sp)
@@ -82,7 +82,7 @@ sub_b: # subprogram to process each substring
     #
     # inputs used: 0th word: address of first valid character in string from stack
     # outputs used:
-    #           stack: (4 words)
+    #           stack: (3 words)
     #           first word: whether string is invalid (0) or not (non-zero)
     #           second word: the convert_string_to_decimal value of string, if valid
     #           third word: unsigned number of valid chars
