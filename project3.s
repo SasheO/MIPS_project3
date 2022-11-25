@@ -37,7 +37,7 @@ sub_a: # subprogram to process entire input into substrings
     addi $sp,$sp,-8
     sw $ra,0($sp)
     sw $s0,4($sp) # preserve $s0 value
-    li $s0,0
+    li $s0,0 # will hold 0 if this is the first substring, non-zero otherwise
     addi $sp,$sp,-16 # make space to store input and the four outputs of sub_b
 
 
@@ -92,7 +92,9 @@ sub_a: # subprogram to process entire input into substrings
             lb $t1,0($t0) # load character at this of string into $t1
             addi $t0,$t0,1 # increment by 1 so that $t0 stores address of next character in loop
             li $t2,44 # $t2 contains ascii value of comma
-            beq $t1,$t2,sub_a_loop_1 # loop again if current character is tab
+            addi $s0,$s0,1
+            beq $t1,$t2,sub_a_loop_1 # loop again if current character is comma
+            addi $s0,$s0,-1
             li $t2,10 # $t2 contains ascii value of enter/newline
             beq $t1,$t2,exit_sub_a # exit at the end of string
             beq $t1,$zero,exit_sub_a # exit loop when you get to the end of the string
