@@ -32,7 +32,12 @@ sub_a: # subprogram to process entire input into substrings
     # called by main
     # calls sub_b
     ################################################################
-    lw $t0,0($sp) # $t0 contains the address of the string
+
+    # algorithm: 
+        # sub_a_loop_1 loops until first non-comma/space/tab character then sends the address to sub_b
+        # sub_a_loop_2 reads address from sub_b output (in stack), loops until comma, null char, enter then starts loop again for next substring
+
+    lw $t0,0($sp) # $t0 contains the address of the input string from stack
     add $fp,$sp,$zero # store frame information
     addi $sp,$sp,-8
     sw $ra,0($sp)
