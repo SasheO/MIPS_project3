@@ -69,9 +69,13 @@ sub_a: # subprogram to process entire input into substrings
                 j sub_a_loop_2
             
             print_decimal_char:
+                li $v0,1
+                lw $a0,12($sp) # load the number of valid characters found
+                syscall
                 li $v0,11 # print char
                 li $a0,47 # forward slash mark ascii
                 syscall
+                lw $a0,8($sp) # load the running sum
                 # TODO: fill in printing a comma before if it isnt the first substring
                 lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
                 j sub_a_loop_2
