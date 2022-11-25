@@ -180,7 +180,7 @@ sub_b: # subprogram to process each substring
             jr $ra
 
             space_found_after_or_between_valid_chars:
-                beq $t0,$zero,loop # if no valid chars have been found i.e. space/tab is leading, not sandwiched between valid chars, loop again
+                beq $t0,$zero,sub_b_loop # if no valid chars have been found i.e. space/tab is leading, not sandwiched between valid chars, loop again
                 addi $t3,$t3,1 # if space/tab is after valid character, update t3
                 j sub_b_loop
 
