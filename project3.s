@@ -219,6 +219,7 @@ sub_b: # subprogram to process each substring
 
     exit_sub_b:
         # TODO: store in stack the validity of string, the running sum/decimal value, the number of valid chars
+        beq $t2,$zero,for_non_valid_substrings # if the substring is empty e.g ,, it is non-valid
         li $t0,1
         sw $t0,4($sp) # store the validity of the substring as valid (non-zero)
         sw $t1,8($sp) # store the running sum (a base-N number)
