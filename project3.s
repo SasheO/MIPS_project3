@@ -71,9 +71,11 @@ sub_a: # subprogram to process entire input into substrings
                 j sub_a_loop_2
             
             print_decimal_char:
-                beq $s0,$zero,else_first_substring
-                
-                else_first_substring:
+                beq $s0,$zero,print_substring_output #
+                li $v0,11 # print char
+                li $a0,44 # comma mark ascii
+                syscall
+                print_substring_output:
                     li $v0,1 # print integer
                     lw $a0,12($sp) # the number of valid characters found
                     syscall
