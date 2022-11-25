@@ -73,11 +73,15 @@ sub_a: # subprogram to process entire input into substrings
 
         sub_a_loop_2:
             # TODO: reads address from sub_b output (in stack), loops until comma, null char, enter then starts loop again fot next substring
+            lb $t1,0($t0) # load character at this of string into $t1
+            addi $t0,$t0,1 # increment by 1 so that $t0 stores address of next character in loop
             lw $t0,0($sp) # $t0 contains the address of the first character of the substring
             li $t2,9 # $t2 contains ascii value of tab
             beq $t1,$t2,sub_a_loop_1 # loop again if current character is tab
             li $t2,32 # $t2 contains ascii value of space
             beq $t1,$t2,sub_a_loop_1 # loop again if curren character is space
+            beq $t1,$zero,exit_sub_a # exit loop when you get to the end of the string
+
 
         j sub_a_loop
     
