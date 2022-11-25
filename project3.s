@@ -64,11 +64,14 @@ sub_a: # subprogram to process entire input into substrings
             j print_decimal_char
 
             print_unrecognized_input:
-                li $v0,11 # print char
-                li $a0,63 # question mark ascii
-                syscall
-                lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
-                j sub_a_loop_2
+                beq $s0,$zero,print_question_mark # if it is the first substring, $s0 will be zero so it will skip the instructions to print a comma
+
+                print_question_mark:
+                    li $v0,11 # print char
+                    li $a0,63 # question mark ascii
+                    syscall
+                    lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
+                    j sub_a_loop_2
             
             print_decimal_char:
                 beq $s0,$zero,print_substring_output # if it is the first substring, $s0 will be zero so it will skip the instructions to print a comma
