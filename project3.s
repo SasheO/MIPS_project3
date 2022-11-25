@@ -69,10 +69,10 @@ sub_a: # subprogram to process entire input into substrings
                 li $v0,11 # print char
                 li $a0,44 # comma ascii
                 syscall
-                
+
                 print_question_mark:
                     li $v0,11 # print char
-                    li $a0,63 # question mark ascii
+                    lw $a0,8($sp) # question mark ascii (load error message from stack)
                     syscall
                     lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
                     j sub_a_loop_2
@@ -133,7 +133,7 @@ sub_b: # subprogram to process each substring
     # outputs used:
     #           stack: (3 words)
     #           first word: whether string is invalid (0) or not (non-zero)
-    #           second word: the convert_string_to_decimal value of string, if valid
+    #           second word: the convert_string_to_decimal value of string, if valid; the error message (a question mark) if not
     #           third word: unsigned number of valid chars
     #       
     # registers used: $t0,$t1,$t2,$t3,$t4,$t5,$t9
@@ -196,6 +196,8 @@ sub_b: # subprogram to process each substring
 
             # any other character is invalid
             sw $zero,4($sp) # store the validity of the substring as non-valid (0)
+            li $t0,63
+            sw $t0,8($sp) # store the validity of the substring as non-valid (0)
             jr $ra
 
             space_found_after_or_between_valid_chars:
