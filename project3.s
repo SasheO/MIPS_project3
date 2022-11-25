@@ -35,38 +35,40 @@ sub_a: # subprogram to process entire input into substrings
     add $fp,$sp,$zero # store frame information
 
 
-    sub_a_loop:
-        lb $t1,0($t0) # load character at this of string into $t1
-        addi $t0,$t0,1 # increment by 1 so that $t0 stores address of next character in loop
+        sub_a_loop_1:
+            lb $t1,0($t0) # load character at this of string into $t1
+            addi $t0,$t0,1 # increment by 1 so that $t0 stores address of next character in loop
 
-        li $t2,9 # $t2 contains ascii value of tab
-        beq $t1,$t2,sub_a_loop # loop again if current character is tab
-        li $t2,32 # $t2 contains ascii value of space
-        beq $t1,$t2,sub_a_loop # loop again if curren character is space
+            li $t2,9 # $t2 contains ascii value of tab
+            beq $t1,$t2,sub_a_loop_1 # loop again if current character is tab
+            li $t2,32 # $t2 contains ascii value of space
+            beq $t1,$t2,sub_a_loop_1 # loop again if curren character is space
 
-        # store address of first non-space tab string to stack and call sub_b
-        addi $sp,$sp,-20 # make space to store input and the four outputs of sub_b
-        add $t0,$t0,-1
-        sw $t0,0($sp)
-        add $t0,$t0,1
-        jal sub_b
-        addi $sp,$sp,20
 
-        # TODO: read output of sub_b
-        lw $t0,4($sp)
-        beq $t0,$zero,print_unrecognized_input
-        j print_decimal_char
 
-        print_unrecognized_input:
-            li $v0,11 # print char
-            li $a0,63 # question mark ascii
-            syscall
-            # todo: check if end of string (fourth word). if end of string, 
-        
-        print_decimal_char:
-            # TODO: fill in
+            # store address of first non-space tab string to stack and call sub_b
+            addi $sp,$sp,-20 # make space to store input and the four outputs of sub_b
+            add $t0,$t0,-1
+            sw $t0,0($sp)
+            add $t0,$t0,1
+            jal sub_b
+            addi $sp,$sp,20
 
-    j sub_a_loop
+            # TODO: read output of sub_b
+            lw $t0,4($sp)
+            beq $t0,$zero,print_unrecognized_input
+            j print_decimal_char
+
+            print_unrecognized_input:
+                li $v0,11 # print char
+                li $a0,63 # question mark ascii
+                syscall
+                # todo: check if end of string (fourth word). if end of string, 
+            
+            print_decimal_char:
+                # TODO: fill in
+
+        j sub_a_loop_1
     
     exit_sub_a:
         jr $ra
