@@ -71,6 +71,14 @@ sub_a: # subprogram to process entire input into substrings
                 syscall
                 # TODO: fill in printing a comma before if it isnt the first substring
 
+        sub_a_loop_2:
+            # TODO: reads address from sub_b output (in stack), loops until comma, null char, enter then starts loop again fot next substring
+            lw $t0,0($sp) # $t0 contains the address of the first character of the substring
+            li $t2,9 # $t2 contains ascii value of tab
+            beq $t1,$t2,sub_a_loop_1 # loop again if current character is tab
+            li $t2,32 # $t2 contains ascii value of space
+            beq $t1,$t2,sub_a_loop_1 # loop again if curren character is space
+
         j sub_a_loop
     
     exit_sub_a:
