@@ -64,29 +64,29 @@ sub_a:
 
             # read output of sub_b whether substring valid or not
             lw $t0,4($sp)
-            beq $t0,$zero,print_unrecognized_input
-            j print_decimal_char
+            beq $t0,$zero,print_output_invalid_substring
+            j print_output_valid_substring
 
-            print_unrecognized_input:
-                beq $s0,$zero,print_question_mark # if it is the first substring, $s0 will be zero so it will skip the instructions to print a comma
+            print_output_invalid_substring:
+                beq $s0,$zero,print_error_message # if it is the first substring, $s0 will be zero so it will skip the instructions to print a comma
                 
                 li $v0,11 # print char
                 li $a0,44 # comma ascii
                 syscall
 
-                print_question_mark:
+                print_error_message:
                     li $v0,11 # print char
                     lw $a0,8($sp) # question mark ascii (load error message from stack)
                     syscall
                     lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
                     j sub_a_loop_2
             
-            print_decimal_char:
+            print_output_valid_substring:
                 beq $s0,$zero,print_substring_output # if it is the first substring, $s0 will be zero so it will skip the instructions to print a comma
                 
                 li $v0,11 # print char
                 li $a0,44 # comma ascii
-                syscall
+                syscall 
 
                 print_substring_output:
                     li $v0,1 # print integer
@@ -101,17 +101,16 @@ sub_a:
                     lw $a0,8($sp) # the base-N number
                     syscall
 
-                    # TODO: fill in printing a comma before if it isnt the first substring
                     lw $t0,0($sp) # $t0 contains the address of the first character of the substring # for use in sub_a_loop_2
                     j sub_a_loop_2
 
         sub_a_loop_2:
-            # reads address from sub_b output (in stack), loops until comma, null char, enter then starts loop again fot next substring
+            # address of the first character of string is in $t0, loops until comma, null char, enter then starts loop again fot next substring or exits procedure at end of substring
             lb $t1,0($t0) # load character at this of string into $t1
             addi $t0,$t0,1 # increment by 1 so that $t0 stores address of next character in loop
             li $t2,44 # $t2 contains ascii value of comma
             addi $s0,$s0,1 # add 1 so that if the current character is a comma, $s0 is updated
-            beq $t1,$t2,sub_a_loop_1 # loop again if current character is comma
+            beq $t1,$t2,sub_a_loop_1 # start sub_a_loop_1 for the next substring after the comma
             addi $s0,$s0,-1 # if the previous instruction isn't branched, the current character is not a comma so restore the previous value of $s0 by subtracting 1
             li $t2,10 # $t2 contains ascii value of enter/newline
             beq $t1,$t2,exit_sub_a # exit at the end of string
