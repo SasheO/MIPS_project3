@@ -62,7 +62,7 @@ sub_a:
             sw $t0,0($sp)
             jal sub_b
 
-            # TODO: read output of sub_b
+            # read output of sub_b whether substring valid or not
             lw $t0,4($sp)
             beq $t0,$zero,print_unrecognized_input
             j print_decimal_char
@@ -136,7 +136,7 @@ sub_b: # subprogram to process each substring
     # outputs used:
     #           stack: (3 words)
     #           first word 4($sp): whether string is invalid (0) or not (non-zero)
-    #           second word 8($sp): the convert_string_to_decimal value of string, if valid; the error message (a question mark) if not
+    #           second word 8($sp): the convert_string_to_decimal value of string, if valid; error message character (a question mark) if not
     #           third word 12($sp): unsigned number of valid chars
     #       
     # registers used: $t0,$t1,$t2,$t3,$t4,$t5,$t9
