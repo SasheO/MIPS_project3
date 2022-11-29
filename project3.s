@@ -34,14 +34,15 @@ sub_a:
     ################################################################
 
     # algorithm: 
-        # sub_a_loop_1 loops until first non-comma/space/tab character then sends the address to sub_b
-        # sub_a_loop_2 reads address from sub_b output (in stack), loops until comma, null char, enter then starts loop again for next substring
+        # sub_a_loop_1 loops until first non-space/tab character then sends the address to sub_b
+        # sub_a_loop_2 reads address from sub_b output (in stack), loops until end of substring (comma) or end of string (null char, enter) then starts loop again for next substring or exits sub_a
 
     lw $t0,0($sp) # $t0 contains the address of the input string from stack
     add $fp,$sp,$zero # store frame information
-    addi $sp,$sp,-8
-    sw $ra,0($sp) # store return address since there is a nested call
+    addi $sp,$sp,-8 # reserve memory space to store $ra and saved register $s0
+    sw $ra,0($sp) # preserve $ra since there is a nested call
     sw $s0,4($sp) # preserve $s0 value
+
     li $s0,0 # will hold 0 if this is the first substring, non-zero otherwise
     addi $sp,$sp,-16 # make space to store input and the four outputs of sub_b
 
@@ -121,7 +122,7 @@ sub_a:
         j sub_a_loop
     
     exit_sub_a:
-        addi $sp,$sp,16 # restore memory used for all the input./output values used for sub_b 
+        addi $sp,$sp,16 # restore memory used for all the input/output values used for sub_b 
         lw $ra,0($sp) # resotre the return address register
         lw $s0,4($sp) # restore $s0 value
         addi $sp,$sp,8 # restore the memory used for sub_a
