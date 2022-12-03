@@ -198,10 +198,11 @@ sub_b: # subprogram to process each substring
             beq $t5,$t4,space_found_after_or_between_valid_chars # if current char is space, update $t3
 
             # any other character is invalid
-            sw $zero,4($sp) # store the validity of the substring as non-valid (0)
-            li $t0,63
-            sw $t0,8($sp) # store the validity of the substring as non-valid (0)
-            jr $ra
+            invalid_substring:
+                sw $zero,4($sp) # store the validity of the substring as non-valid (0)
+                li $t0,63
+                sw $t0,8($sp) # store the validity of the substring as non-valid (0)
+                jr $ra
 
             space_found_after_or_between_valid_chars:
                 beq $t0,$zero,sub_b_loop # if no valid chars have been found i.e. space/tab is leading, not sandwiched between valid chars, loop again
@@ -214,7 +215,7 @@ sub_b: # subprogram to process each substring
         addi $t2,$t2,1 # increment number of valid characters found
         # check if too many valid chars found (5+)
         li $t4,5
-        beq $t2,$t4,for_non_valid_substrings
+        beq $t2,$t4,invalid_substring
         li $t4,26
         mul $t1,$t1,$t4 # multiple previous sum by power of 26 since this converts to base 26 number
         addu $t1,$t1,$t5 # add current valid digit stored in $t5
