@@ -119,7 +119,6 @@ sub_a:
             j sub_a_loop_2 # close the loop
 
 
-        j sub_a_loop
     
     exit_sub_a:
         addi $sp,$sp,16 # restore memory used for all the input/output values used for sub_b 
