@@ -14,10 +14,11 @@ la $a0,input_str
 li $a1,1001
 syscall 
 
-addi $sp,$sp,-4
+# give input string to the subprogram sub_a via stack
+addi $sp,$sp,-4 # reserve memory space for input string
 sw $a0,0($sp)
 jal sub_a
-addi $sp,$sp,4
+addi $sp,$sp,4 # restore memory space used for input string
 
 li $v0, 10 # exit program syscall
 syscall
